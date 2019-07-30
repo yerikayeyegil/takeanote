@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Take a note APP</title>
+</head>
+
+<style>
+	
+	html, * {
+		box-sizing: border-box;
+	}
+
+	html{
+		font-size: 65%;
+
+	}
+
+	body{
+		font-family: sans-serif;
+		color: #9ef89f;
+		margin: 0;
+		padding: 0 5% 5%;
+		background: #3e3d4a;
+
+	}
+
+	/*Form Styles*/
+
+	textarea{
+
+		display: block;
+		border-radius: 0.4rem;
+	}
+	textarea form select{
+		background: #fff;
+		border: 1px solid #520099;
+
+	}
+	form select form button{
+		display: inline-block;
+		margin: 5% 5% 0 0;
+		height: 5%;
+
+	}
+
+	#formAddBtn{
+		width: 10%;
+		height: 30px;
+		background-color: #8be4e1;
+		color: #72797b;
+		border-radius: 5px;
+		border:0;
+		transition: background-color .2s ease-in-out;
+
+	}
+
+	#formAddBtn:hover{
+		cursor: pointer;
+		background-color: #9ef89f;
+	}
+
+/*Note styles*/
+#notes{
+	display: flex;
+	flex-wrap: wrap;
+	padding-top: 10%
+}
+
+.note {
+	width: 150px;
+	height: 100px;
+	font-size: 14px;
+	background: #fff;
+	border-radius: 5px;
+	padding: 10px;
+	margin: 10px;
+	box-shadow: 0 5% 10% rgba(0,0,0,0.1);
+	position: relative;
+	color: #3e3d4a;
+
+}
+
+.notetext{
+	height: 100%;
+	overflow-y: auto;
+}
+.note::after{
+	content: " ";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 5%;
+	border-radius: 0 0 5% 5%;
+
+}
+.noteDelete{
+	cursor: pointer;
+}
+.note.red::after{
+	background-color: lightcoral;
+
+}
+.note.blue::after{
+	background-color: lightskyblue;
+	
+}
+.note.green::after{
+	background-color: lightgreen;
+	
+}
+.note.yellow::after{
+	background-color: gold;
+	
+}
+
+.note span{
+	position: absolute;
+	width: 10%;
+	height: 10%;
+	top: 5%;
+	right: 5%;
+	border-radius: 5%;
+	color: #999;
+	text-align: center;
+}
+
+.note span :hover{
+	color:#333;
+	background: #f5f5f5;
+	cursor: pointer;
+}
+
+
+
+</style>
+<body>
+	<h1>Take a note APP</h1>
+	<form>
+		<textarea name="formNote" id="formNote" cols="50" rows="10" maxlength="300"></textarea>
+
+		<select name="formColor" id="formColor">
+			<option value="none">Select color</option>
+			<option value="blue">Blue</option>
+			<option value="red">Red</option>
+			<option value="green">Green</option>
+			<option value="yellow">Yellow</option>
+		</select>
+		
+		<button id="formAddBtn"> Add note </button> 
+	</form>
+
+	<div id="notes"></div>
+
+	<script>
+		var form = {}
+		var formNote = document.querySelector("#formNote")
+		var formColor = document.querySelector("#formColor")
+		var formAddBtn = document.querySelector("#formAddBtn")
+		var notes = document.querySelector("#notes")
+
+	function addNote() {
+		var text = formNote.value;
+		var note = document.createElement ("div");
+		var deleteBtn = document.createElement("span");
+
+		note.classList.add("note");
+		note.classList.add(formColor.value);
+		note.innerHTML = `<div class='notetext'>${text}</div>`;
+		deleteBtn.classList.add ("noteDelete");
+		deleteBtn.innerHTML="&times;";
+
+		note.appendChild (deleteBtn);
+		notes.appendChild(note);
+
+		formNote.value = " ";
+		formNote.focus();
+
+		addListenerDeleteButton(deleteBtn)
+
+	}
+
+	function addListenerDeleteButton (deleteBtn){
+
+		deleteBtn.addEventListener ("click", function (e){
+			e.stopPropagation();
+			deleteNote(e);
+		});
+	}
+
+	function deleteNote(e){
+		var eventNote = e.target.parentNode;
+		eventNote.parentNode.removeChild(eventNote);
+	}
+
+	formAddBtn.addEventListener("click",function(e){
+		e.preventDefault();
+
+		if(formNote.value != ""){
+			addNote();
+		}
+	})
+	
+
+	</script>
+
+
+</body>
+</html>
